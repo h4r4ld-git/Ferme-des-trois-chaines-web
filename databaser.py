@@ -70,7 +70,7 @@ conn.commit()
 db_datas = ["insert_animaux.sql","insert_animaux_types.sql","insert_animaux_velages.sql","insert_complications.sql","insert_familles.sql","insert_types.sql","insert_velages.sql","insert_velages_complications.sql"]
 
 for i in db_datas:
-    with open("sqlfiles\" + i, "r") as file:
+    with open(i, "r") as file:
         for j in file.read().split("\n"):
             cursor.execute(j)
 
