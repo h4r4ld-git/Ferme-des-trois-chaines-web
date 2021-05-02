@@ -5,11 +5,16 @@
 {% block content %}
   <div class="main">
     <nav>
-        <h1>La ferme des 3 Chênes</h1>
+        <h3>La ferme des 3 Chênes</h3>
     </nav>
     <div class="content">
-      <div style="width:500px;height:500px">
-        <canvas id="graphique" width="100" height="50"></canvas>
+      <h1>Introduction</h1>
+      <p>Ce web a comme but de représenter trois figures sous formes de diagrammes qui permettra d'éclaircir quelques sujets par rapports aux animaux de la ferme. Ces animaux sont des vaches ou des Taureaux.</p>
+      <h1>Théorie de pleine lune</h1>
+      <p>Selon cette théorie les naissances sont plus féquentes en pleine lune que les autres jours du mois. Pour vérifier cette théorie on va représenter comme premiere figure le nombre de naissances pour chaque jour
+      du mois d'octobre 2020. Ensuite on analysera si pendant la fin du mois il y a un nombre élevé de naissances pour vérifier la théorie.</p>
+      <div>
+        <canvas id="graphique"></canvas>
         <script>
       	var ctx = document.getElementById('graphique').getContext('2d');
       	var myChart = new Chart(ctx, {
@@ -26,8 +31,12 @@
       	);
           </script>
       </div>
-      <div style="width:500px;height:500px">
-        <canvas id="graphique1" width="100" height="50"></canvas>
+      <p>C'est clair que il n'y pas vraiment de lien entre les periodes du mois et les naissances.</p>
+      <h1>Periode des mort-nés</h1>
+      <p>Parfois il arrive qu'un veau soit mort-né. Pour diminuer le nombre de mort-né, il est utile de savoir si il y a un moment spécifique durant l'année où il y a le plus de mort-né. Pour repondre à cette question
+      on va représenter comme figure tout les mois de l'année 2020 et le nombre de mort-nés.</p>
+      <div>
+        <canvas id="graphique1"></canvas>
         <script>
       	var ctx1 = document.getElementById('graphique1').getContext('2d');
         var myChart1 = new Chart(ctx1, {
@@ -44,8 +53,12 @@
       	);
           </script>
         </div>
-        <div style="width:500px;height:500px">
-          <canvas id="graphique2" width="100" height="50"></canvas>
+      <p>On remarque qu'il y a bien des périodes spécifiques où il y a un nombre élevé de mort-né. Sur la figure on voit que en automne et en printemps il a le plus de mort-né et en hiver et été il n'y a pas du tout. Donc il y a un rapport avec les saisons.</p>
+      <h1>Familles et décés prématurés</h1>
+      <p>Il est possible qu'un veau soit décédé dans les premieres semaines aprés ça naissance. Pour diminuer le nombre on peut verifier si il y a un rapport entre les familles et les décés prématurés.
+      Pour en savoir, on va représenter comme figure par noms de familles, les nombres de décés et vivants.</p>
+        <div>
+          <canvas id="graphique2"></canvas>
           <script>
         	var ctx2 = document.getElementById('graphique2').getContext('2d');
           var myChart2 = new Chart(ctx2, {
@@ -67,6 +80,7 @@
         	);
             </script>
         </div>
+      <p>Comme on voit sur la figure, il n'y a aucun rapport entre les décés prématurés appart le fait q'une famille avec un nombre élevé de vivants a un nombre élevé de décés prématurés</p>
       </div>
   </div>
 {% endblock %}
