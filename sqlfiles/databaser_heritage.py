@@ -1,23 +1,28 @@
 import sqlite3
 
+# Connection à la base
 conn = sqlite3.connect('Vaches.db')
-
 cursor = conn.cursor()
 
 def heritage_genetique(parent):
-    a_types = []
+    """ Fonction recursive qui retourne le pourcentage de race de l'animal
+    Pre : 'parent' est un id d'un animale et se trouve dans la base de données
+    Post : Retourne un dictionnaire en format {'id de la race' : 'pourcentage'}
+    """
+    a_types = [] # Les ID des animaux deja présents dans la table animaux_types
     for row in cursor.execute("SELECT animal_id from animaux_types"):
         a_types.append(row[0])
-    if parent in a_types:
-        types = {}
+    if parent in a_types: # Si l'animal est présent dans la table animaux_types
+        types = {} # Dictionnaire en format {'id du type' : 'pourcentage'}
         for row in cursor.execute(f"SELECT type_id, pourcentage from animaux_types where animal_id={parent}"):
             types[int(row[0])] = float(row[1])
         return types
     for row in cursor.execute(f'SELECT velages.id, velages.mere_id, velages.pere_id, animaux_velages.animal_id, animaux_velages.velage_id from animaux_velages, velages where animaux_velages.animal_id="{parent}" and velages.id=animaux_velages.velage_id'):
-        type1 = heritage_genetique(row[1]) # Mere
-        type2 = heritage_genetique(row[2]) # Pere
-        retl = {}
-        for i in range(1,4):
+        type1 = heritage_genetique(row[1]) # Races de la Mere
+        type2 = heritage_genetique(row[2]) # Races du Pere
+        retl = {} # Dictionnaire en format {'id du type' : 'somme des pourcentage des parents'}
+        for i in range(1,4): # On sait qu'il y a 3 types
+            # Si l'animal possede 0% d'un type alors ce type ne sera pas dans le dictionnaire
             if not i in type1.keys():
                 t1 = 0
             else:
@@ -26,22 +31,23 @@ def heritage_genetique(parent):
                 t2 = 0
             else:
                 t2 = type2[i]
+            # Si un des deux parents ou les deux heritent de cette race alors enregistrer dans 'rectl'
             if not(t1 == 0 and t2 == 0):
                 retl[i] = (t1 + t2)/2
         return retl
 
-ids = []
+ids = [] # ID des animaux
 for row in cursor.execute("SELECT id from animaux"):
     ids.append(row[0])
 
-for i in ids:
-    a_types = []
+for i in ids: # Pour chaque animal
+    a_types = [] # Liste en format [['id de l'animal', 'id du type']]
     for row in cursor.execute("SELECT animal_id, type_id from animaux_types"):
         a_types.append([row[0],row[1]])
-    her = heritage_genetique(i)
-    for j in her.items():
-        if [i,j[0]] not in a_types:
-            cursor.execute(f"INSERT INTO animaux_types (animal_id, type_id, pourcentage) VALUES ({int(i)},{int(j[0])},{float(j[1])});")
-conn.commit()
+    her = heritage_genetique(i) # Heritage genetique de l'animal
+    for j in her.items(): # Pour chaque type et pourcentage
+        if [i,j[0]] not in a_types: # Si id de l'animal et du type n'est pas présent dans la table animaux_types
+            cursor.execute(f"INSERT INTO animaux_types (animal_id, type_id, pourcentage) VALUES ({int(i)},{int(j[0])},{float(j[1])});") # Inserer dans animaux_types les types et pourcentage de l'animal
+conn.commit() # Enregistrer
 
-conn.close()
+conn.close() # Terminer la connection

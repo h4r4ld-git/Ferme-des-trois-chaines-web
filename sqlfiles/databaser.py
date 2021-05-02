@@ -1,11 +1,10 @@
 import sqlite3
 
+# Connection à la base de données
 conn = sqlite3.connect('Vaches.db')
-
 cursor = conn.cursor()
 
-
-
+# Executer le schéma de la base
 cursor.execute('''CREATE TABLE IF NOT EXISTS "animaux" (
     "id" INT NOT NULL PRIMARY KEY,
     "famille_id" INT NOT NULL,
@@ -67,15 +66,16 @@ cursor.execute('''
     PRIMARY KEY ("velage_id", "complication_id")
    );''')
 
-conn.commit()
+conn.commit() # Enregistrer
 
+# Inserer les données dans la base
 db_datas = ["insert_animaux.sql","insert_animaux_types.sql","insert_animaux_velages.sql","insert_complications.sql","insert_familles.sql","insert_types.sql","insert_velages.sql","insert_velages_complications.sql"]
 
-for i in db_datas:
+for i in db_datas: # Executer chaque ligne dans chaque fichier de la liste db_datas
     with open(i, "r") as file:
         for j in file.read().split("\n"):
             cursor.execute(j)
 
 conn.commit()
 
-conn.close()
+conn.close() # Terminer la connection
