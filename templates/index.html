@@ -3,63 +3,70 @@
   Vaches
 {% endblock %}
 {% block content %}
-  <div style="width:500px;height:500px">
-    <canvas id="graphique" width="100" height="50"></canvas>
-    <script>
-  	var ctx = document.getElementById('graphique').getContext('2d');
-  	var myChart = new Chart(ctx, {
-  	type: 'bar',   // le type du graphique
-  	data: {        // les données
-          labels: {{jours}},
-          datasets: [{
-                      label: 'Velages en octobre 2020',
-                      data: {{freq}},
-                      backgroundColor : '#cc65fe'
-                     }]
-  	       }
-           }
-  	);
-      </script>
-  </div>
-  <div style="width:500px;height:500px">
-    <canvas id="graphique1" width="100" height="50"></canvas>
-    <script>
-  	var ctx1 = document.getElementById('graphique1').getContext('2d');
-    var myChart1 = new Chart(ctx1, {
-  	type: 'bar',   // le type du graphique
-  	data: {        // les données
-          labels: ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"],
-          datasets: [{
-                      label: 'Mort-né en 2020',
-                      data: {{freq1}},
-                      backgroundColor : 'rgba(0,255,0,1)'
-                     }]
-  	       }
-           }
-  	);
-      </script>
-    </div>
-    <div style="width:500px;height:500px">
-      <canvas id="graphique2" width="100" height="50"></canvas>
-      <script>
-    	var ctx2 = document.getElementById('graphique2').getContext('2d');
-      var myChart2 = new Chart(ctx2, {
-    	type: 'bar',   // le type du graphique
-    	data: {        // les données
-            labels: [{% for post in nd %}"{{post}}",{% endfor %}],
-            datasets: [{
-                        label: 'Vivants',
-                        data: {{vv}},
-                        backgroundColor: '#36a2eb'
-                      },
-                      {
-                        label : "Décés",
-                        data: {{dc}},
-                        backgroundColor: '#ff6384'
-                      },]
-    	       }
-             }
-    	);
-        </script>
+  <div class="main">
+    <nav>
+        <h1>La ferme des 3 Chênes</h1>
+    </nav>
+    <div class="content">
+      <div style="width:500px;height:500px">
+        <canvas id="graphique" width="100" height="50"></canvas>
+        <script>
+      	var ctx = document.getElementById('graphique').getContext('2d');
+      	var myChart = new Chart(ctx, {
+      	type: 'bar',   // le type du graphique
+      	data: {        // les données
+              labels: {{jours}},
+              datasets: [{
+                          label: 'Velages en octobre 2020',
+                          data: {{freq}},
+                          backgroundColor : '#cc65fe'
+                         }]
+      	       }
+               }
+      	);
+          </script>
       </div>
+      <div style="width:500px;height:500px">
+        <canvas id="graphique1" width="100" height="50"></canvas>
+        <script>
+      	var ctx1 = document.getElementById('graphique1').getContext('2d');
+        var myChart1 = new Chart(ctx1, {
+      	type: 'bar',   // le type du graphique
+      	data: {        // les données
+              labels: ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"],
+              datasets: [{
+                          label: 'Mort-né en 2020',
+                          data: {{freq1}},
+                          backgroundColor : 'rgba(0,255,0,1)'
+                         }]
+      	       }
+               }
+      	);
+          </script>
+        </div>
+        <div style="width:500px;height:500px">
+          <canvas id="graphique2" width="100" height="50"></canvas>
+          <script>
+        	var ctx2 = document.getElementById('graphique2').getContext('2d');
+          var myChart2 = new Chart(ctx2, {
+        	type: 'bar',   // le type du graphique
+        	data: {        // les données
+                labels: [{% for post in nd %}"{{post}}",{% endfor %}],
+                datasets: [{
+                            label: 'Vivants',
+                            data: {{vv}},
+                            backgroundColor: '#36a2eb'
+                          },
+                          {
+                            label : "Décés",
+                            data: {{dc}},
+                            backgroundColor: '#ff6384'
+                          },]
+        	       }
+                 }
+        	);
+            </script>
+        </div>
+      </div>
+  </div>
 {% endblock %}

@@ -1,5 +1,5 @@
-html { font-family: sans-serif; background: #eee; padding: 1rem; }
-body { max-width: 80%; margin: 0 auto; background: #eee; }
+html { font-family: sans-serif; background: #111; padding: 1rem; }
+body { max-width: 80%; margin: 0 auto; background: #111; }
 h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
 h2 { font-family: serif; color: #377B94; margin: 1rem 0; }
 a { color: #377ba8; }
@@ -23,9 +23,7 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content label { font-weight: bold; margin-bottom: 0.5em; }
 .content input, .content textarea { margin-bottom: 1em; }
 .content textarea { min-height: 12em; resize: vertical; }
-.content ul {list-style-image: url('/static/cow-face-icon.png');}
 .content ul li {margin: 0 0 5px 0;}
-.content ul ul {list-style-image: url('/static/bull.ico');margin: 5px 0 10px 0;}
 .content ul ul li {margin: 0 0 5px 0;}
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
@@ -89,9 +87,8 @@ table caption {
 
 /* Style page content */
 .main {
-  margin-left: 240px; /* Same as the width of the sidebar */
   padding: 0px 10px;
-  background: white;
+  background: lightgray;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
@@ -100,4 +97,4 @@ table caption {
   .sidenav a {font-size: 18px;}
   .log h1 {font-size: 18px;}
   .log a {font-size: 15px;}
-} 
+}
