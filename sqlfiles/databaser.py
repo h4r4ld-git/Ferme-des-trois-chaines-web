@@ -4,6 +4,8 @@ conn = sqlite3.connect('Vaches.db')
 
 cursor = conn.cursor()
 
+
+
 cursor.execute('''CREATE TABLE IF NOT EXISTS "animaux" (
     "id" INT NOT NULL PRIMARY KEY,
     "famille_id" INT NOT NULL,

@@ -10,6 +10,8 @@ def index():
     """
     conn = sqlite3.connect('Vaches.db')
     cursor = conn.cursor()
+
+    # Figure 1
     mnth = []
     for row in cursor.execute("SELECT date from velages"):
         if row[0].split("/")[1:] == ["10","2020"]:
@@ -26,6 +28,7 @@ def index():
         else:
             freq.append(0)
 
+    # Figure 2
     mort_nids = []
     freq1 = [0 for i in range(12)]
     for row in cursor.execute("SELECT id from animaux where mort_ne=1"):
@@ -35,6 +38,7 @@ def index():
             if row[0].split("/")[2] == "2020":
                 freq1[int(row[0].split("/")[1])-1] += 1
 
+    # Figure 3
     familles = {}
     for row in cursor.execute("SELECT nom, id from familles"):
         familles[row[1]] = ([0,0],row[0])
