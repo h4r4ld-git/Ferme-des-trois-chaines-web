@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+  Vaches
+{% endblock %}
+{% block content %}
+  <div style="width:500px;height:500px">
+    <canvas id="graphique" width="100" height="50"></canvas>
+    <script>
+  	var ctx = document.getElementById('graphique').getContext('2d');
+  	var myChart = new Chart(ctx, {
+  	type: 'bar',   // le type du graphique
+  	data: {        // les données
+          labels: {{jours}},
+          datasets: [{
+                      label: 'Velages en octobre 2020',
+                      data: {{freq}}
+                     }]
+  	       }
+           }
+  	);
+      </script>
+  </div>
+  <div style="width:500px;height:500px">
+    <canvas id="graphique1" width="100" height="50"></canvas>
+    <script>
+  	var ctx1 = document.getElementById('graphique1').getContext('2d');
+    var myChart1 = new Chart(ctx1, {
+  	type: 'bar',   // le type du graphique
+  	data: {        // les données
+          labels: ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"],
+          datasets: [{
+                      label: 'Mort-né en 2020',
+                      data: {{freq1}}
+                     }]
+  	       }
+           }
+  	);
+      </script>
+    </div>
+{% endblock %}
