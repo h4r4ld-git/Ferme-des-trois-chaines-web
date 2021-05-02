@@ -35,8 +35,20 @@ def index():
             if row[0].split("/")[2] == "2020":
                 freq1[int(row[0].split("/")[1])-1] += 1
 
+    familles = {}
+    for row in cursor.execute("SELECT nom, id from familles"):
+        familles[row[1]] = ([0,0],row[0])
+
+    for row in cursor.execute("SELECT * from animaux"):
+        if row[-1]:
+            familles[row[1]][0][0] -= 1
+        else:
+            familles[row[1]][0][1] += 1
+    ndfamille = [i[1][1] for i in familles.items()]
+    dcfamille = [i[1][0][0] for i in familles.items()]
+    vvfamille = [i[1][0][1] for i in familles.items()]
     conn.close()
-    return render_template("index.html", jours = [i for i in range(1,29)], freq = freq, freq1 = freq1)
+    return render_template("index.html", jours = [i for i in range(1,29)], freq = freq, freq1 = freq1, nd = ndfamille, dc = dcfamille, vv = vvfamille)
 
 if __name__ == "__main__":
     app.run()
