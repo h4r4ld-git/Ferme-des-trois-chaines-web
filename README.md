@@ -69,4 +69,4 @@ Le repertoire data dans flaskr contient les fichiers sql avec toutes le requetes
 ## Images
 
 ![alt text](captures_d_ecran/capt1.png)
-![alt text](captures_d_ecran/capt1.png)
+![alt text](captures_d_ecran/capt2.png)
