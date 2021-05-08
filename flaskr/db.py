@@ -22,11 +22,12 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
-def heritage(db):
+def heritage():
     """
-    Pre : 'db' est une connection (get_db()) à la base de données
+    Pre : -
     Post : Ajoute l'heritage genetique de chaque animal dans la table 'animaux_types' de la base données (Si il n'existe pas)
     """
+    db = get_db()
     # Type et pourcentage pour l'animal
     query1 = """
     SELECT at.type_id, at.pourcentage FROM animaux_types at
@@ -57,6 +58,16 @@ def heritage(db):
             except sqlite3.IntegrityError:
                 pass
 
+def get_type_quantite():
+    db = get_db()
+    # Nombre d'animal pour chaque type
+    query = """
+    SELECT type, COUNT(*) FROM animaux_types
+    LEFT JOIN types ON animaux_types.type_id = types.id
+    GROUP BY type
+    """
+    return [(i[0], i[1]) for i in db.execute(query).fetchall()]
+
 def init_db():
     db = get_db()
     # Creer le schema de la base
@@ -84,7 +95,7 @@ def init_db():
                 except sqlite3.IntegrityError:
                     pass
     # Inserer les heritages de chaque animal dans la base
-    heritage(db)
+    heritage()
 
     db.commit() # Enregistrer les modifications
 

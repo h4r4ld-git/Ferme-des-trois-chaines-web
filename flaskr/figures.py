@@ -5,35 +5,40 @@ from flaskr.db import get_db
 
 bp = Blueprint('Figures', __name__, url_prefix='/')
 
+def figure1_data():
+    db = get_db()
+    query = """
+    SELECT SUBSTR(v.date,1,2), CAST(COUNT(*) AS float)/30.0 FROM velages v
+    GROUP BY SUBSTR(v.date,1,2)
+    """
+    ex_query = db.execute(query).fetchall() # [(Jours de naissances, nombre de naissance en moyenne)]
+    return [[i[0] for i in ex_query[:-3]],[i[1] for i in ex_query[:-3]]] # [[1-28], [nombres des naissances de 1991 à 2020 dans l'ordre selon les jours, divisé par 30]]
+
+
+def figure2_data():
+    db = get_db()
+    query1 = """
+    SELECT SUBSTR(v.date,4,2), CAST(COUNT(*) AS float)/30.0 FROM animaux a, velages v, animaux_velages av WHERE a.mort_ne=1 AND av.animal_id=a.id AND av.velage_id=v.id
+    GROUP BY SUBSTR(v.date,4,2)
+    """
+    ex_query = db.execute(query1).fetchall() # [(mois, nombre de mort_nés)]
+    return [i[1] for i in ex_query] # [Nombres de mort_nés de 1991 et 2020 dans l'ordre selon les mois, divisé par 30]
+
+def figure3_data():
+    db = get_db()
+    # requetes SQL
+    noms_proportions = """
+    SELECT nom, (SELECT CAST(COUNT(*) AS float) FROM animaux a WHERE a.famille_id=familles.id AND a.decede=1)/(SELECT CAST(COUNT(*) AS float) FROM animaux a WHERE a.famille_id=familles.id AND a.decede=0)*100
+    FROM animaux a
+    LEFT JOIN familles ON a.famille_id=familles.id
+    GROUP BY nom
+    """
+    ex_query = db.execute(noms_proportions).fetchall()
+    return [[i[0] for i in ex_query],[i[1] for i in ex_query]] # [noms des familles, les proportions]
+
 @bp.route('/',methods=['GET', 'POST'])
 def figures():
-    db = get_db()
-    # Figure 1
-    query = """
-    SELECT SUBSTR(v.date,1,2) FROM velages v
-    """
-    ex_query = db.execute(query).fetchall() # Jours de naissances
-    data = {int(i[0]):ex_query.count(i) for i in ex_query} # Dictionnaire en format {jour de naissance: nombre de naissances}
-
-    # Figure 2
-    query1 = """
-    SELECT SUBSTR(v.date,4,2) FROM animaux a, velages v, animaux_velages av WHERE a.mort_ne=1 AND av.animal_id=a.id AND av.velage_id=v.id
-    """
-    ex_query = db.execute(query1).fetchall() # Les mois de naissances des mort_nés
-    data1 = {int(i[0]):ex_query.count(i) for i in ex_query} # Dictionnaire en format {mois de naissance: nombre de mort_nés}
-
-    # Figure 3
-    query = """
-    SELECT id, nom FROM familles
-    """
-    decedes = """
-    SELECT COUNT(*) FROM animaux a WHERE a.famille_id={0} AND a.decede=1
-    """
-    vivants = """
-    SELECT COUNT(*) FROM animaux a WHERE a.famille_id={0} AND a.decede=0
-    """
-    familles = db.execute(query).fetchall() # ID de chaque famille
-    proportions = {i[1]:(db.execute(decedes.format(i[0])).fetchall()[0][0]/db.execute(vivants.format(i[0])).fetchall()[0][0])*100 for i in familles} # Dictionnaire en format {nom de famille: rapport entre décés et vivants pour cette famille}
+    db = get_db() # Connexion à la base de données
 
     # Passer les données à 'base.html' et afficher
-    return render_template("base.html", f1 = [[i for i in range(1,29)],[data.get(i,0)/20 for i in range(1,29)]], f2 = [data1.get(i,0)/20 for i in range(1,13)], f3 = [proportions.keys(), list(proportions.values())])
+    return render_template("base.html", f1 = figure1_data(), f2 = figure2_data(), f3 = figure3_data())

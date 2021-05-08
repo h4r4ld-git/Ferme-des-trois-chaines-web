@@ -34,7 +34,7 @@
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: {{f1[0]}},
+                    labels: [{% for i in f1[0] %} "{{i}}", {% endfor %}],
                     datasets: [{
                         label: 'Naissances en moyenne entre 1991 et 2020',
                         data: {{f1[1]}},
