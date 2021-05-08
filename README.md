@@ -8,10 +8,7 @@ $ sh run.sh
 
 ## Execution pour Windows
 
-```
-$ run.bat
-```
-Vous pouvez aussi directement lancer le fichier run.bat sur Windows au lieu de l'executer sur CMD ou powershell
+Pour lancer le site sur windows il suffit d'executer le fichier run.bat.
 
 ## Outils
 
