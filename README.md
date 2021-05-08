@@ -30,6 +30,10 @@ Pour l'installer il faut executer la commande suivante
 ```
 $ pip3 install virtualenv
 ```
+Et finalement, vous avez besoin de pytest pour les testes, pour l'installer il faut executer la commande suivante
+```
+$ pip3 install pytest
+```
 ## Arborescence
 ```
 .
