@@ -28,6 +28,9 @@ $ pip3 install virtualenv
 ## Arborescence
 ```
 .
+├── captures_d_ecran
+│   ├── capt1.png
+│   └── capt2.png
 ├── flaskr
 │   ├── data
 │   │   ├── insert_animaux.sql
@@ -42,10 +45,7 @@ $ pip3 install virtualenv
 │   ├── db.py
 │   ├── figures.py
 │   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── db.cpython-38.pyc
-│   │   ├── figures.cpython-38.pyc
-│   │   └── __init__.cpython-38.pyc
+│   ├── README.md
 │   ├── static
 │   │   ├── bg.jpg
 │   │   ├── bg.png
@@ -58,10 +58,15 @@ $ pip3 install virtualenv
 │   ├── flaskr.sqlite
 │   └── test.py
 ├── run.bat
-├── run.sh
-└── setup.py
+└── run.sh
+
 ```
 Les requetes SQL sont executer par le fichier flaskr/db.py avec la commande `flask init-db`.
 Le fichier flaskr/figures.py permet de recuperer les données nécessaires de la base de données et afficher les graphes sur le site.
 Les repertoires static et templates dans flaskr contiennent les styles (CSS, JS, bootstrap, images) et le code html du site.
 Le repertoire data dans flaskr contient les fichiers sql avec toutes le requetes SQL.
+
+## Images
+
+![alt text](captures_d_ecran/capt1.png)
+![alt text](captures_d_ecran/capt1.png)
