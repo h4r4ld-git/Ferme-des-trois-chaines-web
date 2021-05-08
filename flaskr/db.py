@@ -23,35 +23,47 @@ def close_db(e=None):
         db.close()
 
 def heritage(db):
+    """
+    Pre : 'db' est une connection (get_db()) à la base de données
+    Post : Ajoute l'heritage genetique de chaque animal dans la table 'animaux_types' de la base données (Si il n'existe pas)
+    """
+    # Type et pourcentage pour l'animal
     query1 = """
     SELECT at.type_id, at.pourcentage FROM animaux_types at
     WHERE at.animal_id={0}
     """
+    # velage-id, pere et mere de l'animal
     query2 = """
     SELECT av.velage_id, v.mere_id, v.pere_id FROM animaux_velages av, velages v
     WHERE av.animal_id={0} AND v.id=av.velage_id
     """
     def her(an):
-        types = {i[0] : i[1] for i in db.execute(query1.format(an)).fetchall()}
-        parents = db.execute(query2.format(an)).fetchall()
-        if len(types) == 0:
-            mere = her(parents[0][1])
-            pere = her(parents[0][2])
-            return {i : (mere.get(i, 0) + pere.get(i,0))/2 for i in list(set(mere.keys()) | set(pere.keys()))}
+        """
+        Pre : 'an' est un id dans la table 'animaux'
+        Post : retourne un dictionnaire en format {type : pourcentage} pour l'animal 'an'
+        """
+        types = {i[0] : i[1] for i in db.execute(query1.format(an)).fetchall()} # Dictionnaire en format {type: pourcentage} pour l'animal 'an'
+        parents = db.execute(query2.format(an)).fetchall() # Parents de l'animal
+        if len(types) == 0: # Si il n'y a pas de types pour l'animal
+            mere = her(parents[0][1]) # l'heritage de la mere
+            pere = her(parents[0][2]) # l'heritage du pere
+            return {i : (mere.get(i, 0) + pere.get(i,0))/2 for i in list(set(mere.keys()) | set(pere.keys()))} # Dictionnaire en format {type: la somme des pourcentages du type des parents diviser par deux}
         return types
 
-    for row in db.execute("SELECT id FROM animaux").fetchall():
-        for item in her(row[0]).items():
+    for row in db.execute("SELECT id FROM animaux").fetchall(): # Pour chaque animal
+        for item in her(row[0]).items(): # Pour chaque type et pourcentage de l'animal
             try:
-                db.execute(f"INSERT INTO animaux_types (animal_id, type_id, pourcentage) VALUES ({row[0]},{item[0]},{item[1]});")
+                db.execute(f"INSERT INTO animaux_types (animal_id, type_id, pourcentage) VALUES ({row[0]},{item[0]},{item[1]});") # Inserer l'heritage genetique
             except sqlite3.IntegrityError:
                 pass
 
 def init_db():
     db = get_db()
+    # Creer le schema de la base
     with current_app.open_resource("data/schema.sql") as f:
         db.executescript(f.read().decode('utf8'))
 
+    # Fichiers des données sql
     sqlfiles = [
         "insert_animaux_types.sql",
         "insert_animaux.sql",
@@ -62,6 +74,8 @@ def init_db():
         "insert_velages_complications.sql",
         "insert_velages.sql"
     ]
+
+    # Inserer les données dans la base
     for file in sqlfiles:
         with current_app.open_resource("data/"+file) as f:
             for line in f.read().decode('utf8').split('\n'):
@@ -69,9 +83,10 @@ def init_db():
                     db.execute(line)
                 except sqlite3.IntegrityError:
                     pass
+    # Inserer les heritages de chaque animal dans la base
     heritage(db)
 
-    db.commit()
+    db.commit() # Enregistrer les modifications
 
 
 @click.command('init-db')
