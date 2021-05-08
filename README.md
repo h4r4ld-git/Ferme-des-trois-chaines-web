@@ -4,11 +4,19 @@
 ```
 $ sh run.sh
 ```
-
+Pour les testes il faut executer la commande suivante
+```
+$ pytest -vv
+```
 
 ## Execution pour Windows
 
 Pour lancer le site sur windows il suffit d'executer le fichier run.bat.
+
+Pour les testes il faut executer la commande suivante
+```
+$ pytest -vv
+```
 
 ## Outils
 
@@ -25,43 +33,54 @@ $ pip3 install virtualenv
 ## Arborescence
 ```
 .
-├── captures_d_ecran
-│   ├── capt1.png
-│   └── capt2.png
-├── flaskr
-│   ├── data
-│   │   ├── insert_animaux.sql
-│   │   ├── insert_animaux_types.sql
-│   │   ├── insert_animaux_velages.sql
-│   │   ├── insert_complications.sql
-│   │   ├── insert_familles.sql
-│   │   ├── insert_types.sql
-│   │   ├── insert_velages_complications.sql
-│   │   ├── insert_velages.sql
-│   │   └── schema.sql
-│   ├── db.py
-│   ├── figures.py
-│   ├── __init__.py
-│   ├── README.md
-│   ├── static
-│   │   ├── bg.jpg
-│   │   ├── bg.png
-│   │   ├── bootstrap.css
-│   │   ├── chart.min.js
-│   │   └── favicon.png
-│   └── templates
-│       └── base.html
-├── instance
-│   ├── flaskr.sqlite
-│   └── test.py
-├── run.bat
-└── run.sh
+│   MANIFEST.in
+│   README.md
+│   run.bat
+│   run.sh
+│   setup.py
+│
+├───captures_d_ecran
+│       capt1.png
+│       capt2.png
+│
+├───flaskr
+│   │   db.py
+│   │   figures.py
+│   │   __init__.py
+│   │
+│   ├───data
+│   │       insert_animaux.sql
+│   │       insert_animaux_types.sql
+│   │       insert_animaux_velages.sql
+│   │       insert_complications.sql
+│   │       insert_familles.sql
+│   │       insert_types.sql
+│   │       insert_velages.sql
+│   │       insert_velages_complications.sql
+│   │       schema.sql
+│   │
+│   ├───static
+│   │       bg.jpg
+│   │       bg.png
+│   │       bootstrap.css
+│   │       chart.min.js
+│   │       favicon.png
+│   │
+│   └───templates
+│           base.html
+│
+├───instance
+│       flaskr.sqlite
+│
+└───tests
+        test_data.py
 
 ```
 Les requetes SQL sont executer par le fichier flaskr/db.py avec la commande `flask init-db`.
 Le fichier flaskr/figures.py permet de recuperer les données nécessaires de la base de données et afficher les graphes sur le site.
 Les repertoires static et templates dans flaskr contiennent les styles (CSS, JS, bootstrap, images) et le code html du site.
 Le repertoire data dans flaskr contient les fichiers sql avec toutes le requetes SQL.
+Le programme test_data.py execute les tests sur les données des figures et l'heritage genetique des animaux.
 
 ## Images
 
