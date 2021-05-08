@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <script type="text/javascript" src={{url_for('static', filename='chart.min.js')}}></script>
     <link rel="stylesheet" href={{url_for('static', filename='bootstrap.css')}}>
-    <title>Test</title>
+    <link rel="icon" href={{url_for('static', filename='favicon.png')}}>
+    <title>Ferme des 3 Chênes</title>
   </head>
   <body>
     <div class="bg-image" style="background-image:url({{url_for('static', filename="bg.jpg")}}); height:100%; padding:10px">
@@ -13,12 +14,18 @@
       </div>
       <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
         <div class="row justify-content-md-center">
+          <h1 class="col-md-2 text-center display-8 text-secondary">Introduction</h1>
+        </div>
+        <div class="row justify-content-md-center">
+          <p class="col-md-5 text-center text-light">Ce web a comme but de représenter trois figures sous formes de diagrammes qui permettra d'éclaircir quelques sujets par rapports aux animaux de la ferme. Ces animaux sont des vaches ou des Taureaux.</p>
+        </div>
+      </div>
+      <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
+        <div class="row">
           <div class="col-md-6">
-            <div class="jumbotron jumbotron-fluid">
-              <h1 class="display-8 text-center text-secondary">Théorie de pleine lune</h1>
-              <p class="text-center text-light">Selon cette théorie les naissances sont plus féquentes en pleine lune que les autres jours du mois. Pour vérifier cette théorie on va représenter comme premiere figure le nombre de naissances pour chaque jour
-              de tout les mois entre 1991 et 2020. C'est clair que il n'y pas vraiment de lien entre les periodes du mois et les naissances.</p>
-            </div>
+            <h1 class="display-8 text-center text-secondary">Théorie de pleine lune</h1>
+            <p class="text-center text-light">Selon cette théorie les naissances sont plus féquentes en pleine lune que les autres jours du mois. Pour vérifier cette théorie on va représenter comme premiere figure le nombre de naissances pour chaque jour
+            de tout les mois entre 1991 et 2020. C'est clair que il n'y pas vraiment de lien entre les periodes du mois et les naissances.</p>
           </div>
           <div class="col-md-6 bg-light rounded" style="border-bottom: 5px solid #8c8b8b">
             <canvas id="myChart"></canvas>
@@ -31,7 +38,7 @@
                     datasets: [{
                         label: 'Naissances en moyenne entre 1991 et 2020',
                         data: {{f1[1]}},
-                        backgroundColor: "RGBA(0, 255, 0, 1)"
+                        backgroundColor: "#53900F"
                     }]
                 },
                 options: {
@@ -47,7 +54,7 @@
         </div>
       </div>
       <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
-        <div class="row justify-content-md-center">
+        <div class="row">
           <div class="col-md-6 bg-light rounded" style="border-bottom: 5px solid #8c8b8b">
             <canvas id="graphique1"></canvas>
             <script>
@@ -59,7 +66,7 @@
                   datasets: [{
                               label: 'Mort-nés en moyenne entre 1991 et 2020',
                               data: {{f2}},
-                              backgroundColor : 'RGBA(255, 0, 0, 1)'
+                              backgroundColor : '#FC4445'
                              }]
           	       }
                    }
@@ -67,23 +74,19 @@
             </script>
           </div>
           <div class="col-md-6">
-            <div class="jumbotron jumbotron-fluid">
-              <h1 class="display-8 text-center text-secondary">Periode des mort-nés</h1>
-              <p class="text-center text-light">Parfois il arrive qu'un veau soit mort-né. Pour diminuer le nombre de mort-nés, il est utile de savoir si il y a un moment spécifique durant l'année où il y a le plus de mort-nés. Pour répondre à cette question
-      on va représenter comme figure, le nombre de mort-nés par mois en moyenne entre 1991 et 2020. On remarque que en automne et au debut d'hiver le nombre de mort-nés est élevé donc il y a un rapport entre les saisons (automne et debut d'hiver) et le nombre de mort-nés.</p>
-            </div>
+            <h1 class="display-8 text-center text-secondary">Periode des mort-nés</h1>
+            <p class="text-center text-light">Parfois il arrive qu'un veau soit mort-né. Pour diminuer le nombre de mort-nés, il est utile de savoir si il y a un moment spécifique durant l'année où il y a le plus de mort-nés. Pour répondre à cette question
+            on va représenter comme figure, le nombre de mort-nés par mois en moyenne entre 1991 et 2020. On remarque que en automne et au debut d'hiver le nombre de mort-nés est élevé donc il y a un rapport entre les saisons (automne et debut d'hiver) et le nombre de mort-nés.</p>
           </div>
         </div>
       </div>
       <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
-        <div class="row justify-content-md-center">
+        <div class="row">
           <div class="col-md-6">
-            <div class="jumbotron jumbotron-fluid">
-              <h1 class="display-8 text-center text-secondary">Familles et décés prématurés</h1>
-              <p class="text-center text-light">Il est possible qu'un veau soit décédé dans les premieres semaines aprés ça naissance. Pour diminuer le nombre on peut verifier si il y a un rapport entre les familles et les décés prématurés.
-      Pour en savoir, on va représenter comme figure par noms de familles, le nombre de décédés par rapport au nombre de vivants en pourcentage (Si le pourcentage est 100, le nombre de décédés est identique au nombre de vivants). On remarque que dans les familles
-              Toblerone, Kinder, Papaye, Naza, Normande et Mercedes le rapport entre les décédés prématurement et les vivants est 100% donc il y a un rapport entre les décés prématuré et ces familles.</p>
-            </div>
+            <h1 class="display-8 text-center text-secondary">Familles et décés prématurés</h1>
+            <p class="text-center text-light">Il est possible qu'un veau soit décédé dans les premieres semaines aprés ça naissance. Pour diminuer le nombre on peut verifier si il y a un rapport entre les familles et les décés prématurés.
+            Pour en savoir, on va représenter comme figure par noms de familles, le nombre de décédés par rapport au nombre de vivants en pourcentage (Si le pourcentage est 100, le nombre de décédés est identique au nombre de vivants). On remarque que dans les familles
+            Toblerone, Kinder, Papaye, Naza, Normande et Mercedes le rapport entre les décédés prématurement et les vivants est 100% donc il y a un rapport entre les décés prématuré et ces familles.</p>
           </div>
           <div class="col-md-6 bg-light rounded" style="border-bottom: 5px solid #8c8b8b">
             <canvas id="graphique2"></canvas>
@@ -96,7 +99,7 @@
                   datasets: [{
                               label: 'Proportion entre vivants et décédés prématurement',
                               data: {{f3[1]}},
-                              backgroundColor: '#36a2eb'
+                              backgroundColor: '#0074E1'
                             }]
           	       }
                    }
