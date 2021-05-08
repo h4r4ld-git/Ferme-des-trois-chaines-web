@@ -1,0 +1,60 @@
+CREATE TABLE IF NOT EXISTS "animaux" (
+  "id" INT NOT NULL PRIMARY KEY,
+  "famille_id" INT NOT NULL,
+  "sexe" VARCHAR (255) NOT NULL,
+  "presence" INT NOT NULL,
+  "apprivoise" INT NOT NULL,
+  "mort_ne" INT NOT NULL,
+  "decede" INT NOT NULL,
+  FOREIGN KEY ("famille_id") REFERENCES "familles" ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "familles" (
+  "id" INT NOT NULL PRIMARY KEY,
+  "nom" VARCHAR (255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "types" (
+  "id" INT NOT NULL PRIMARY KEY,
+  "type" VARCHAR (255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "animaux_types" (
+  "animal_id" INT NOT NULL,
+  "type_id" INT NOT NULL,
+  "pourcentage" REAL NOT NULL,
+  FOREIGN KEY ("animal_id") REFERENCES "animaux" ("id"),
+  FOREIGN KEY ("type_id") REFERENCES "types" ("id"),
+  PRIMARY KEY ("animal_id", "type_id"),
+  CHECK ("pourcentage" >= 0 AND "pourcentage" <= 100)
+);
+
+CREATE TABLE IF NOT EXISTS "velages" (
+  "id" INT NOT NULL PRIMARY KEY,
+  "mere_id" INT NOT NULL,
+  "pere_id" INT NOT NULL,
+  "date" DATE NOT NULL,
+  FOREIGN KEY ("mere_id") REFERENCES "animaux" ("id"),
+  FOREIGN KEY ("pere_id") REFERENCES "animaux" ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "animaux_velages" (
+  "animal_id" INT NOT NULL,
+  "velage_id" INT NOT NULL,
+  FOREIGN KEY ("animal_id") REFERENCES "animaux" ("id"),
+  FOREIGN KEY ("velage_id") REFERENCES "velages" ("id"),
+  PRIMARY KEY ("animal_id", "velage_id")
+);
+
+CREATE TABLE IF NOT EXISTS "complications" (
+  "id" INT NOT NULL PRIMARY KEY,
+  "complication" TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "velages_complications" (
+  "velage_id" INT NOT NULL,
+  "complication_id" INT NOT NULL,
+  FOREIGN KEY ("velage_id") REFERENCES "velages" ("id"),
+  FOREIGN KEY ("complication_id") REFERENCES "complications" ("id"),
+  PRIMARY KEY ("velage_id", "complication_id")
+ );

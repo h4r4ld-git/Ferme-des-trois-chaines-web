@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src={{url_for('static', filename='chart.min.js')}}></script>
+    <link rel="stylesheet" href={{url_for('static', filename='bootstrap.css')}}>
+    <title>Test</title>
+  </head>
+  <body>
+    <div class="bg-image" style="background-image:url({{url_for('static', filename="bg.jpg")}}); height:100%; padding:10px">
+      <div class="container bg-light rounded" style="padding:10px;border-bottom: 5px solid #8c8b8b">
+        <h1 class="display-8 text-center text-dark">La ferme des 3 Chênes</h1>
+      </div>
+      <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
+        <div class="row justify-content-md-center">
+          <div class="col-md-6">
+            <div class="jumbotron jumbotron-fluid">
+              <h1 class="display-8 text-center text-secondary">Théorie de pleine lune</h1>
+              <p class="text-center text-light">Selon cette théorie les naissances sont plus féquentes en pleine lune que les autres jours du mois. Pour vérifier cette théorie on va représenter comme premiere figure le nombre de naissances pour chaque jour
+              de tout les mois entre 1991 et 2020. C'est clair que il n'y pas vraiment de lien entre les periodes du mois et les naissances.</p>
+            </div>
+          </div>
+          <div class="col-md-6 bg-light rounded" style="border-bottom: 5px solid #8c8b8b">
+            <canvas id="myChart"></canvas>
+            <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{f1[0]}},
+                    datasets: [{
+                        label: 'Naissances en moyenne entre 1991 et 2020',
+                        data: {{f1[1]}},
+                        backgroundColor: "RGBA(0, 255, 0, 1)"
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            </script>
+          </div>
+        </div>
+      </div>
+      <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
+        <div class="row justify-content-md-center">
+          <div class="col-md-6 bg-light rounded" style="border-bottom: 5px solid #8c8b8b">
+            <canvas id="graphique1"></canvas>
+            <script>
+          	var ctx1 = document.getElementById('graphique1').getContext('2d');
+            var myChart1 = new Chart(ctx1, {
+          	type: 'bar',   // le type du graphique
+          	data: {        // les données
+                  labels: ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"],
+                  datasets: [{
+                              label: 'Mort-nés en moyenne entre 1991 et 2020',
+                              data: {{f2}},
+                              backgroundColor : 'RGBA(255, 0, 0, 1)'
+                             }]
+          	       }
+                   }
+          	);
+            </script>
+          </div>
+          <div class="col-md-6">
+            <div class="jumbotron jumbotron-fluid">
+              <h1 class="display-8 text-center text-secondary">Periode des mort-nés</h1>
+              <p class="text-center text-light">Parfois il arrive qu'un veau soit mort-né. Pour diminuer le nombre de mort-nés, il est utile de savoir si il y a un moment spécifique durant l'année où il y a le plus de mort-nés. Pour répondre à cette question
+      on va représenter comme figure, le nombre de mort-nés par mois en moyenne entre 1991 et 2020. On remarque que en automne et au debut d'hiver le nombre de mort-nés est élevé donc il y a un rapport entre les saisons (automne et debut d'hiver) et le nombre de mort-nés.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container bg-dark rounded" style="padding:50px;border-bottom: 1px solid #8c8b8b">
+        <div class="row justify-content-md-center">
+          <div class="col-md-6">
+            <div class="jumbotron jumbotron-fluid">
+              <h1 class="display-8 text-center text-secondary">Familles et décés prématurés</h1>
+              <p class="text-center text-light">Il est possible qu'un veau soit décédé dans les premieres semaines aprés ça naissance. Pour diminuer le nombre on peut verifier si il y a un rapport entre les familles et les décés prématurés.
+      Pour en savoir, on va représenter comme figure par noms de familles, le nombre de décédés par rapport au nombre de vivants en pourcentage (Si le pourcentage est 100, le nombre de décédés est identique au nombre de vivants). On remarque que dans les familles
+              Toblerone, Kinder, Papaye, Naza, Normande et Mercedes le rapport entre les décédés prématurement et les vivants est 100% donc il y a un rapport entre les décés prématuré et ces familles.</p>
+            </div>
+          </div>
+          <div class="col-md-6 bg-light rounded" style="border-bottom: 5px solid #8c8b8b">
+            <canvas id="graphique2"></canvas>
+            <script>
+          	var ctx2 = document.getElementById('graphique2').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+          	type: 'bar',   // le type du graphique
+          	data: {        // les données
+                  labels: [{% for i in f3[0] %} "{{i}}", {% endfor %}],
+                  datasets: [{
+                              label: 'Proportion entre vivants et décédés prématurement',
+                              data: {{f3[1]}},
+                              backgroundColor: '#36a2eb'
+                            }]
+          	       }
+                   }
+          	);
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
