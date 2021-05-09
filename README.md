@@ -24,7 +24,7 @@ Pour lancer le site sur windows il suffit d'executer le fichier run.bat.
 Si il y a un probleme avec l'execution du fichier run.bat alors il faut executer les commandes suivantes sur CMD, dans le repertoire du projet
 ```
 $ py -m venv venv
-$ venv\Scripts\activate
+$ CALL venv\Scripts\activate
 $ set FLASK_APP=flaskr
 $ set FLASK_ENV=development
 $ flask init-db
