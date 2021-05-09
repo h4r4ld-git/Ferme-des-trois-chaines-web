@@ -4,6 +4,15 @@
 ```
 $ sh run.sh
 ```
+Si il y a un probleme avec l'execution de run.sh alors il faut executer les commandes suivantes
+```
+$ python3 -m virtualenv venv
+$ . ./venv/bin/activate
+$ export FLASK_APP=flaskr
+$ export FLASK_ENV=development
+$ flask init-db
+$ flask run
+```
 Pour les testes il faut executer la commande suivante
 ```
 $ pytest -vv
@@ -12,7 +21,24 @@ $ pytest -vv
 ## Execution pour Windows
 
 Pour lancer le site sur windows il suffit d'executer le fichier run.bat.
-
+Si il y a un probleme avec l'execution du fichier run.bat alors il faut executer les commandes suivantes sur CMD, dans le repertoire du projet
+```
+$ py -m venv venv
+$ venv\Scripts\activate
+$ set FLASK_APP=flaskr
+$ set FLASK_ENV=development
+$ flask init-db
+$ flask run
+```
+Ou sur powershell dans le repertoire du projet
+```
+$ py -m venv venv
+$ venv\Scripts\activate
+$ $env:FLASK_APP='flaskr'
+$ $env:FLASK_ENV='development'
+$ flask init-db
+$ flask run
+```
 Pour les testes il faut executer la commande suivante
 ```
 $ pytest -vv
