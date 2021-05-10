@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Théorie de pleine lune
+{% endblock %}
+
+{% block text %}
+	Selon cette théorie les naissances sont plus fréquentes en pleine lune que les autres jours du mois. Pour vérifier cette théorie on va représenter comme première figure le nombre des naissances pour chaque jour
+	d'un mois entre 1991 et 2020. C'est clair qu'il n'y pas vraiment de lien entre les périodes du mois et les naissances.</p>
+{% endblock %}
+
+{% block chartScript %}
+	<nav class="text-center">
+		<ul class="pagination justify-content-center">
+			<li class="page-item active">
+				<a class="page-link" href="{{ url_for('figures.figure1', year=previousMonth.year, month=previousMonth.month) }}">
+					<svg width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+						<path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+					</svg>
+				</a>
+			</li>
+			<li class="page-item disabled" style="width: 150px;">
+				<span class="page-link text-dark">{{ dateSelected.strftime('%B %Y') }}</span>
+			</li>
+			<li class="page-item active">
+				<a class="page-link" href="{{ url_for('figures.figure1', year=nextMonth.year, month=nextMonth.month) }}">
+					<svg width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+						<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+				  	</svg>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<canvas id="myChart" width="400" height="150"></canvas>
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var data = [
+		{% for numberOfVelage in dates.values() %}
+			{{ numberOfVelage }},
+		{% endfor %}
+		];
+		var labels = [
+		{% for date in dates.keys() %}
+			'{{ date.day }}',
+		{% endfor %}
+		];
+		var myChart = new Chart(ctx, {
+			options: {
+				responsive: true,
+				scale: {
+					ticks: {
+						precision: 0,
+					},
+				},
+				scales: {
+					x: {
+						grid: {
+							display: false,
+						},
+					},
+				},
+				plugins: {
+					legend: {
+						display: false,
+					},
+					tooltip: {
+						enabled: false,
+					},
+				},
+			},
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					data: data,
+					backgroundColor: 'rgb(44, 12, 244)',
+				}],
+			},
+		});
+	</script>
+{% endblock %}

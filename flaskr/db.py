@@ -1,9 +1,7 @@
 import sqlite3
-
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
-
 
 def get_db():
     if 'db' not in g:
@@ -12,15 +10,54 @@ def get_db():
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
-
     return g.db
-
 
 def close_db(e=None):
     db = g.pop('db', None)
-
     if db is not None:
         db.close()
+
+def init_db(name):
+
+    db = get_db()
+    # Inserer les données dans la base
+    with current_app.open_resource(name) as f:
+        for line in f.read().decode('utf8').split('\n'):
+            try:
+                db.execute(line)
+            except sqlite3.IntegrityError:
+                pass
+
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    scriptsSql = [
+        'schemas_sql/create.sql',
+        'schemas_sql/insert_animaux_types.sql',
+        'schemas_sql/insert_animaux_velages.sql',
+        'schemas_sql/insert_animaux.sql',
+        'schemas_sql/insert_complications.sql',
+        'schemas_sql/insert_familles.sql',
+        'schemas_sql/insert_types.sql',
+        'schemas_sql/insert_velages_complications.sql',
+        'schemas_sql/insert_velages.sql',
+    ]
+
+    db = get_db()
+    # Schéma de la base de données
+    with current_app.open_resource(scriptsSql[0]) as f:
+        db.executescript(f.read().decode('utf8'))
+
+    # Données de la base
+    for script in scriptsSql[1:]:
+        init_db(script)
+
+
+    heritage()
+
+def init_app(app):
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
 
 def heritage():
     """
@@ -58,6 +95,8 @@ def heritage():
             except sqlite3.IntegrityError:
                 pass
 
+    db.commit()
+
 def get_type_quantite():
     db = get_db()
     # Nombre d'animal pour chaque type
@@ -67,46 +106,3 @@ def get_type_quantite():
     GROUP BY type
     """
     return [(i[0], i[1]) for i in db.execute(query).fetchall()]
-
-def init_db():
-    db = get_db()
-    # Creer le schema de la base
-    with current_app.open_resource("data/schema.sql") as f:
-        db.executescript(f.read().decode('utf8'))
-
-    # Fichiers des données sql
-    sqlfiles = [
-        "insert_animaux_types.sql",
-        "insert_animaux.sql",
-        "insert_animaux_velages.sql",
-        "insert_complications.sql",
-        "insert_familles.sql",
-        "insert_types.sql",
-        "insert_velages_complications.sql",
-        "insert_velages.sql"
-    ]
-
-    # Inserer les données dans la base
-    for file in sqlfiles:
-        with current_app.open_resource("data/"+file) as f:
-            for line in f.read().decode('utf8').split('\n'):
-                try:
-                    db.execute(line)
-                except sqlite3.IntegrityError:
-                    pass
-    # Inserer les heritages de chaque animal dans la base
-    heritage()
-
-    db.commit() # Enregistrer les modifications
-
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)

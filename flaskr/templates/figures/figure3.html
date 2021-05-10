@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Familles et décés prématurés
+{% endblock %}
+
+{% block text %}
+	Il est possible qu'un veau soit décédé dans les premieres semaines aprés ça naissance. Pour diminuer le nombre on peut verifier si il y a un rapport entre les familles et les décés prématurés.
+	Pour en savoir, on va représenter comme figure par noms de familles, le nombre de décédés par rapport au nombre de vivants en pourcentage (Si le pourcentage est 100, le nombre des décédés est identique au nombre des vivants). On remarque que dans les familles
+	Toblerone, Kinder, Papaye, Naza, Normande et Mercedes le rapport entre les décédés prématurement et les vivants est 100%, donc il y a un rapport entre les décés prématurés et ces familles.
+{% endblock %}
+
+{% block chartScript %}
+	<canvas id="myChart" width="400" height="150"></canvas>
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var data = [
+		{% for query in query_result %}
+			{{ query[1] }},
+		{% endfor %}
+		];
+		var labels = [
+		{% for query in query_result %}
+			"{{ query[0] }}",
+		{% endfor %}
+		];
+		var myChart = new Chart(ctx, {
+			options: {
+				responsive: true,
+				scale: {
+					ticks: {
+						precision: 0,
+					},
+				},
+				scales: {
+					x: {
+						grid: {
+							display: false,
+						},
+					},
+				},
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+			},
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					data: data,
+					backgroundColor: 'rgb(44, 12, 244)',
+				}],
+			},
+		});
+	</script>
+{% endblock %}

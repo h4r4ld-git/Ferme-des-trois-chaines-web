@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Période des mort-nés
+{% endblock %}
+
+{% block text %}
+	Parfois il arrive qu'un veau soit mort-né. Pour diminuer le nombre des mort-nés, il est utile de savoir si il y a un moment spécifique durant l'année où il y a le plus de mort-nés. Pour répondre à cette question
+	on va représenter comme figure, le nombre de mort-nés par mois en moyenne entre 1991 et 2020. On remarque qu'en automne et au debut d'hiver le nombre des mort-nés est élevé donc il y a un rapport entre les saisons (automne et debut d'hiver) et le nombre des mort-nés.</p>
+{% endblock %}
+
+{% block chartScript %}
+	<canvas id="myChart" width="400" height="150"></canvas>
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var data = [
+		{% for query in query_result %}
+			{{ query[1] }},
+		{% endfor %}
+		];
+		var labels = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"];
+		var myChart = new Chart(ctx, {
+			options: {
+				responsive: true,
+				scale: {
+					ticks: {
+						precision: 0,
+					},
+				},
+				scales: {
+					x: {
+						grid: {
+							display: false,
+						},
+					},
+				},
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+			},
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					data: data,
+					backgroundColor: 'rgb(44, 12, 244)',
+				}],
+			},
+		});
+	</script>
+{% endblock %}
