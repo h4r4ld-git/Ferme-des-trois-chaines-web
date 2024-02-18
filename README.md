@@ -1,4 +1,4 @@
-# LINFO1002_2021_P2_1A_6
+# Flask Application
 ## Execution pour Linux ou MacOS
 
 ```
